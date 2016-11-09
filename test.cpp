@@ -46,6 +46,12 @@ int main(int argc, char* argv[]) {
     statusCode = system("diff listening.txt output.txt > /dev/null") / 256;
     cout << "diff ./setport --port 4040: "<< statusCode << endl;
     
+    //setport -p --environment
+    statusCode = system("./setport -p --environment > output.txt") / 256;
+    cout << "./setport -p --environment: " << statusCode << endl;
+    statusCode = system("diff help.txt output.txt > /dev/null") / 256;
+    cout << "diff ./setport -p --environment: "<< statusCode << endl;
+    
     //negative tests
     
     //setport help
@@ -125,6 +131,12 @@ int main(int argc, char* argv[]) {
     cout << "./setport -P 714: "<< statusCode << endl;
     statusCode = system("diff incorrect_flag.txt output.txt > /dev/null") / 256;
     cout << "diff ./setport -P 714: " << statusCode << endl;
+    
+    //setport -p --enviroment misspelled
+    statusCode = system("./setport -p --enviroment > output.txt") / 256;
+    cout << "./setport -p --enviroment: " << statusCode << endl;
+    statusCode = system("diff help.txt output.txt > /dev/null") / 256;
+    cout << "diff ./setport -p --enviroment: "<< statusCode << endl;
     
     return 0;
 }
