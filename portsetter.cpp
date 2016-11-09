@@ -75,7 +75,7 @@ void about(){
 }
 
 void version(){
-    const string VERSION = "1.2";
+    const string VERSION = "1.3";
     cout << "version: " << VERSION << endl;
 }
 
@@ -200,13 +200,13 @@ int main(int argc, char* args[]) {
 
     envFlag = args[2];
     //has enviroment variable
-    if(envFlag == "-e"){
+    if(envFlag == "-e" || envFlag == "--environment"){
         if(flag == "-p" || flag == "--port"){
+            int i_envPort;
+            string::size_type sz;   // alias of size_t
+            
             if(argc == 4){
-                string envPort = args[3];
-                string::size_type sz;   // alias of size_t
-                int i_envPort;
-                
+                string envPort = getenv(args[3]);
                 try
                 {
                     i_envPort = stoi (envPort, &sz);
@@ -218,12 +218,21 @@ int main(int argc, char* args[]) {
                     usageScreen();
                     return 1;
                 }
-                cout << msg[LISTENING] << PORT << endl;
+                cout << msg[LISTENING] << i_envPort << endl;
                 //cout << "Listening on port: " << i_envPort << endl;
                 return 0;
             }
             else{
-                cout << msg[LISTENING] << PORT << endl;
+                try {
+                        i_envPort = stoi (getenv("PORT"), &sz);
+                }
+                catch (...) {
+                    cout << msg[INCORRECT_ARGS] << endl;
+                    //cout << "Incorrect arguments." << endl;
+                    usageScreen();
+                    return 1;
+                }
+                cout << msg[LISTENING] << i_envPort << endl;
                 //cout << "Listening on port: " << PORT << endl;
                 return 0;
             }
@@ -264,7 +273,7 @@ int main(int argc, char* args[]) {
             return 0;
         }
         if (flag == "-p" || flag == "--port"){
-            cout << msg[LISTENING] << PORT << endl;
+            cout << msg[LISTENING] << i_portNumb << endl;
             //cout << "Listening on port: " << portNumb << endl;
             return 0;
         } 
